@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block body_block %}
+
+  <div class="container">
+  <section class="content">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+      <div class="col-md-12 col-xs-12">
+
+        <div id="messages"></div>
+
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">Add Order</h3>
+          </div>
+          <!-- /.box-header -->
+          <!--<form role="form" action="" method="post" class="form-horizontal">-->
+              <div class="box-body">
+
+
+                <div class="form-group">
+                  <label for="gross_amount" class="col-sm-12 control-label">Date: </label>
+                </div>
+               
+                <div class="col-md-4 col-xs-12 pull pull-left">
+
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Table</label>
+                    <div class="col-sm-7">
+                      <select class="form-control" id="table_name" name="table_name">
+                          <option value="0">Take Away</option>  
+                          <option value="1">1</option>  
+                          <option value="2">2</option>  
+                          <option value="3">3</option>  
+                          <option value="4">4</option>                
+                      </select>
+                    </div>
+                  </div>
+
+                </div>
+                
+                
+                <br /> <br/>
+
+
+                {% if ord %}
+                <table class="table table-bordered" id="product_info_table">
+                  <thead>
+                    <tr>
+                      <th style="width:40%">Product</th>
+                      <th style="width:10%">Qty</th>
+                      <th style="width:10%">Rate</th>
+                      <th style="width:20%">Amount</th>
+                      <th style="width:10%"><a href="{% url 'mainApp:clearRoughOrder' %}" class="btn btn-primary" >Clear</a></th>
+
+                    </tr>
+                  </thead>
+                </table>
+
+
+                {% endif %}
+               {% for i in ord %}
+               <table class="table table-bordered" id="product_info_table">
+                 
+
+                   <tbody>
+                     <tr id="row_1">
+                       <td>
+                        <select class="form-control select_group product" data-row-id="row_1" id="product_1" name="products" style="width:100%;" required>
+                            
+                             
+                              <option  >{{i.pro_name}}</option>
+                              
+                             
+
+                          </select>
+            </td>
+                        <td> {{i.quantity}}</td>
+                        <td>
+                          <input type="text" name="rate[]" id="rate_1" class="form-control" disabled autocomplete="off" value= {{i.price}}>
+                         
+                        </td>
+                        <td>
+                          <input type="text" name="amount[]" id="amount_1" class="form-control" disabled  value= {{i.total_price}} >
+                         
+                        </td>
+
+                        <th style="width:10%"> <input type="submit" value="Add" name="product_name"></th>
+                      </tr>
+                   </tbody>
+                </table>
+
+               {% endfor %}
+
+
+
+                <form action="" method="post">
+                  {% csrf_token %}                    
+                <table class="table table-bordered" id="product_info_table">
+                  <thead>
+                    <tr>
+                      <th style="width:50%">Product</th>
+                      <th style="width:10%">Qty</th>
+                      <th style="width:10%">Rate</th>
+                      <th style="width:20%">Amount</th>
+                    </tr>
+                  </thead>
+
+                   <tbody>
+                     <tr id="row_1">
+                       <td>
+                        <select class="form-control select_group product" data-row-id="row_1" id="product_1" name="products" style="width:100%;" onchange="getProductData(1)" required>
+                            
+                              {% for pro in product %}
+                              <option value={{pro.id}} >{{pro.name}}</option>
+                              
+                              {% endfor %} 
+
+                          </select>
+            </td>
+                        <td><input type="text" name="qty" id="qty_1" class="form-control" required onkeyup="getTotal(1)"></td>
+                        <td>
+                          <input type="text" name="rate[]" id="rate_1" class="form-control" disabled autocomplete="off">
+                          <input type="hidden" name="rate_value[]" id="rate_value_1" class="form-control" autocomplete="off">
+                        </td>
+                        <td>
+                          <input type="text" name="amount[]" id="amount_1" class="form-control" disabled autocomplete="off">
+                          <input type="hidden" name="amount_value[]" id="amount_value_1" class="form-control" autocomplete="off">
+                        </td>
+
+                        <th style="width:10%"> <input type="submit" value="Add" name="product_name"></th>
+                      </tr>
+                   </tbody>
+                </table>
+
+
+              </form>
+
+                <br /> <br/>
+                <div class="row">
+                <div class="col-md-6 col-12">
+                </div>
+                <div class="col-md-6 col-12 ">
+
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label">Gross Amount</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="gross_amount" name="gross_amount" disabled autocomplete="off"  value={{gt}}>
+                      <input type="hidden" class="form-control" id="gross_amount_value" name="gross_amount_value" autocomplete="off" value={{gt}}>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="service_charge" class="col-sm-5 control-label">S-Charge%</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="service_charge" name="service_charge" disabled autocomplete="off" value="17%">
+                      <input type="hidden" class="form-control" id="service_charge_value" name="service_charge_value" autocomplete="off" value="17%">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="vat_charge" class="col-sm-5 control-label">Vat</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="vat_charge" name="vat_charge" disabled autocomplete="off" value={{vat}}>
+                      <input type="hidden" class="form-control" id="vat_charge_value" name="vat_charge_value" autocomplete="off" value={{vat}}>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="discount" class="col-sm-5 control-label">Discount</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="discount" name="discount" placeholder="Discount" onkeyup="subAmount()"  value="0" autocomplete="off">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="net_amount" class="col-sm-5 control-label">Net Amount</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="net_amount" name="net_amount" disabled autocomplete="off"  value={{net_amount}}>
+                      <input type="hidden" class="form-control" id="net_amount_value" name="net_amount_value" autocomplete="off" value={{net_amount}}>
+                    </div>
+                  </div>
+                  <div class="box-footer mx-3">
+                    <input type="hidden" name="service_charge_rate"  autocomplete="off">
+                    <input type="hidden" name="vat_charge_rate"  autocomplete="off">
+                    <a href="{% url 'mainApp:makeOrder' %}" class="btn btn-primary" >Order</a>
+                    <a href="" class="btn btn-warning">Back</a>
+                  </div>
+                </div>
+              </div>
+              </div>
+              <!-- /.box-body -->
+
+          
+            <!--</form>-->
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+      <!-- col-md-12 -->
+    </div>
+    <!-- /.row -->
+    
+
+  </section>
+</div>
+  
+{% endblock  %}

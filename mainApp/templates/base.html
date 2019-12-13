@@ -50,12 +50,10 @@
 								<li><a href="{% static '#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
 								<li><a href="{% static '#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li>
 								<li><a href="{% static '#"><i class="lnr lnr-cog"></i> <span>Settings</span></a></li>
-								<li><a href="logout"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
+								<li><a  href="{% url 'mainApp:logout' %}"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
 							</ul>
 						</li>
-						<!-- <li>
-							<a class="update-pro" href="{% static 'https://www.themeineed.com/downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro" title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i> <span>UPGRADE TO PRO</span></a>
-						</li> -->
+						
 					</ul>
 				</div>
 			</div>
@@ -72,16 +70,14 @@
 							<div id="subPages" class="collapse ">
 								<ul class="nav">
 									<li><a href="{% static 'page-profile.html' %}" class="">Profile</a></li>
-									<li><a href="{% static 'page-login.html' %}" class="">Logout</a></li>
+									<li><a href="{% url 'mainApp:logout' %}" class="">Logout</a></li>
 									
 								</ul>
 							</div>
 						</li>
-						<li>
-							<a href="{% static '#subPages' %}" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Take Orders</span> </a></li>
-						<li><a href="reports" class=""><i class="lnr lnr-chart-bars"></i> <span>Reports</span></a></li>
-						<li><a href="{% static 'notifications.html' %}" class=""><i class="lnr lnr-alarm"></i> <span>Current Orders List</span></a></li>
-						<li><a href="tables" class=""><i class="lnr lnr-dice"></i> <span>Tables</span></a></li>
+						<li><a href="{% url 'mainApp:takeorder' %}" class=""><i class="lnr lnr-dice"></i> <span>Take Order</span></a></li>
+						<li><a href="{% url 'mainApp:reports' %}"  class=""><i class="lnr lnr-chart-bars"></i> <span>Reports</span></a></li>
+						<li><a href="" class=""><i class="lnr lnr-alarm"></i> <span>Current Orders List</span></a></li>
 					</ul>
 				</nav>
 			</div>
